@@ -8,6 +8,7 @@ import com.example.board.repository.CommentRepository;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.swing.text.html.parser.Entity;
 import java.util.List;
@@ -21,11 +22,13 @@ public class CommentService {
     @Autowired
     private BoardRepository boardRepository;
 
+    @Transactional
     public List<Comment> show() {
         List<Comment> allComment = commentRepository.findAll();
         return allComment;
     }
 
+    @Transactional
     public Comment addComment(Long boardId, CommentDTO dto) {
         Board board = boardRepository.findById(boardId).orElseThrow(()->new RuntimeException("Board Not Found"));
 
@@ -35,6 +38,7 @@ public class CommentService {
         return save;
     }
 
+    @Transactional
     public boolean delete(Long id) {
         Comment comment = commentRepository.findById(id).orElse(null);
         if(comment != null){
@@ -45,6 +49,7 @@ public class CommentService {
         }
     }
 
+    @Transactional
     public Comment patchComment(Long id, CommentDTO dto) {
         Comment comment = commentRepository.findById(id).orElse(null);
         if(comment != null){

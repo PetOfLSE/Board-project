@@ -6,6 +6,7 @@ import com.example.board.repository.BoardRepository;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
@@ -16,17 +17,20 @@ public class BoardService {
     @Autowired
     private BoardRepository boardRepository;
 
+    @Transactional
     public List<Board> index() {
         List<Board> allBoard = boardRepository.findAll();
         return allBoard;
     }
 
+    @Transactional
     public Board add(BoardDTO dto) {
         Board board = dto.toEntity();
         Board save = boardRepository.save(board);
         return save;
     }
 
+    @Transactional
     public Board patch(Long id, BoardDTO dto) {
         Optional<Board> byId = boardRepository.findById(id);
         if(byId.isPresent()){
@@ -41,6 +45,7 @@ public class BoardService {
         }
     }
 
+    @Transactional
     public Board delete(Long id) {
         Optional<Board> byId = boardRepository.findById(id);
         if(byId.isPresent()){
